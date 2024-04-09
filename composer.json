@@ -7,7 +7,11 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9"
+        "laravel/reverb": "@beta",
+        "laravel/socialite": "^5.12",
+        "laravel/tinker": "^2.9",
+        "pusher/pusher-php-server": "^7.2",
+        "spatie/laravel-permission": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
