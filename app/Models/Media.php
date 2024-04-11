@@ -13,7 +13,7 @@ class Media extends Model
     protected $fillable = [
         'mediable',
         'hash',
-        'path'
+        'path',
     ];
 
     public function mediable(): MorphTo

@@ -12,11 +12,11 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-        'active'
+        'active',
     ];
 
     protected $casts = [
-        'active' => 'boolean'
+        'active' => 'boolean',
     ];
 
     public function posts(): HasMany

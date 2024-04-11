@@ -17,9 +17,8 @@ class Post extends Model
         'slug',
         'title',
         'content',
-        'status'
+        'status',
     ];
-
 
     public function user(): BelongsTo
     {
@@ -35,5 +34,4 @@ class Post extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
-
 }

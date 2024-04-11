@@ -16,7 +16,7 @@ class Comment extends Model
         'user_id',
         'post_id',
         'parent_id',
-        'message'
+        'message',
     ];
 
     public function user(): BelongsTo
@@ -36,6 +36,6 @@ class Comment extends Model
 
     public function child(): BelongsToMany
     {
-        return $this->belongsToMany(Comment::class,'parent_id', 'id');
+        return $this->belongsToMany(Comment::class, 'parent_id', 'id');
     }
 }
