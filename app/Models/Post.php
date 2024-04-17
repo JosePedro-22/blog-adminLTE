@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Str;
 
 class Post extends Model
 {
@@ -19,6 +21,13 @@ class Post extends Model
         'content',
         'status',
     ];
+    public static function boot(){
+        parent::boot();
+
+        static::creating(function($post){
+            $post->slug = Str::slug($post->title, '_');
+        });
+    }
 
     public function user(): BelongsTo
     {
@@ -33,5 +42,10 @@ class Post extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function media(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'mediable');
     }
 }
