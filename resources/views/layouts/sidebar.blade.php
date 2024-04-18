@@ -28,14 +28,21 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <x-sidebar.link icon="nav-icon fas fa-solid fa-newspaper" :href="route('dashboard')" :is-active="request()->is('dashboard')" style="cursor:pointer">
+                <x-sidebar.link icon="nav-icon fas fa-solid fa-desktop" :href="route('dashboard')" :is-active="request()->is('dashboard')" style="cursor:pointer">
                     Home
+                </x-sidebar.link>
+
+                <x-sidebar.link icon="nav-icon fa-solid fa fa-users" :href="route('users.index')" :is-active="request()->is('user*')" style="cursor:pointer">
+                    Usuarios
                 </x-sidebar.link>
 
                 <x-sidebar.link icon="nav-icon fas fa-solid fa-newspaper" :href="route('posts.index')" :is-active="request()->is('posts*')" style="cursor:pointer">
                     Posts
                 </x-sidebar.link>
 
+                <x-sidebar.link icon="nav-icon fa-solid fa fa-plus-square" :href="route('categories.index')" :is-active="request()->is('category*')" style="cursor:pointer">
+                    Categorias
+                </x-sidebar.link>
             </ul>
         </nav>
 

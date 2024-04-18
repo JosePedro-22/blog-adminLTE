@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -63,5 +63,19 @@ class User extends Authenticatable
     public function media(): MorphOne
     {
         return $this->morphOne(Media::class);
+    }
+
+    public function setPasswordAttribute($value){
+        if(!empty($value) && !is_null($value))
+            $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function status(): Attribute
+    {
+        return new Attribute(
+            get: function(){
+                return $this->attributes['active'] ? 'Ativo' : 'Inativo';
+            }
+        );
     }
 }

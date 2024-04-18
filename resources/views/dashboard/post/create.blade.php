@@ -45,7 +45,7 @@
                                 <option>Publicado</option>
                             </x-select>
 
-                            <button class="btn btn-primary">Cadastrar</button>
+                            <button class="btn btn-primary">Salvar</button>
                         </form>
                     </div>
                 </div>
@@ -57,10 +57,3 @@
         <script src="{{ asset('js/demo.js') }}"></script>
     @endpush
 </x-app-layout>
-                            {{-- <div class="form-group">
-                                <label for="content">Conteúdo</label>
-                                <textarea class="form-control" name="content" id="content" @class(['form-group', 'erros' => $errors->has('content')]) cols="30" rows="10"></textarea>
-                                @error('content')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div> --}}
