@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PostController;
@@ -24,5 +25,7 @@ Route::resource('users', UserController::class);
 Route::resource('categories', CategoryController::class);
 
 Route::resource('tags', TagController::class);
+
+Route::resource('posts.comments', CommentController::class);
 
 Route::get('file/{hash}', FileController::class)->name('file');

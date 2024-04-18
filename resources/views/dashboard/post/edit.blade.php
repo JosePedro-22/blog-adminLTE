@@ -6,7 +6,7 @@
                     <h1>Posts</h1>
 
                     <a href="{{ route('posts.index') }}" class="btn btn-dark">
-                        Home
+                        Voltar
                     </a>
                 </div>
             </div>
