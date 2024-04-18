@@ -43,6 +43,10 @@
                 <x-sidebar.link icon="nav-icon fa-solid fa fa-plus-square" :href="route('categories.index')" :is-active="request()->is('category*')" style="cursor:pointer">
                     Categorias
                 </x-sidebar.link>
+
+                <x-sidebar.link icon="nav-icon fa-solid fa fa-tags" :href="route('tags.index')" :is-active="request()->is('tags*')" style="cursor:pointer">
+                    Tags
+                </x-sidebar.link>
             </ul>
         </nav>
 

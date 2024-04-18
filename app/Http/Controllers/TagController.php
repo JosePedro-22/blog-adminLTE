@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class CategoryController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categorias = Category::paginate(10);
+        $tags = Tag::paginate(10);
 
-        return view('dashboard.category.index',
-            [
-                'categorias' => $categorias,
-            ]
-        );
+        return view('dashboard.tag.index', [
+            'tags' => $tags,
+        ]);
     }
 
     /**
@@ -27,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('dashboard.category.create');
+        return view('dashboard.tag.create');
     }
 
     /**
@@ -36,8 +34,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required | string | unique:categories',
-            'active' => 'sometimes'
+            'name' => 'required | string | unique:tags',
+            'active' => 'required'
         ]);
 
         if(!isset($data['active']) || $data['active'] != 'on')
@@ -45,32 +43,33 @@ class CategoryController extends Controller
         else
             $data['active'] = true;
 
-        Category::create($data);
+        Tag::query()->create($data);
 
         return back();
     }
+
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(Tag $tag)
     {
-        return view('dashboard.category.edit', [
-            'category' => $category
+        return view('dashboard.tags.edit', [
+            'tag' => $tag
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Tag $tag)
     {
         $data = $request->validate([
             'name' => [
                 'required',
                 'string',
-                Rule::unique('categories')->ignore($category->id)
+                Rule::unique('tags')->ignore($tag->id)
             ],
-            'active' => 'sometimes'
+            'active' => 'required'
         ]);
 
         if(!isset($data['active']) || $data['active'] != 'on')
@@ -78,17 +77,17 @@ class CategoryController extends Controller
         else
             $data['active'] = true;
 
-        $category->update($data);
+        $tag->update($data);
 
-        return redirect()->route('category.index');
+        return redirect()->route('tags.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Tag $tag)
     {
-        $category->delete();
+        $tag->delete();
 
         return back();
     }
