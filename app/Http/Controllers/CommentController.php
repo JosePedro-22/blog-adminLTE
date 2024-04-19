@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\NewCommentInPost;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -22,6 +23,8 @@ class CommentController extends Controller
             'user_id' => auth()->id(),
             'message' => $data['message'],
         ]);
+
+        $post->user->notify(new NewCommentInPost());
 
         return back();
     }

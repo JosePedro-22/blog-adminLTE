@@ -14,10 +14,16 @@
             <img class="img-fluid" style="height:250px" id="post-image" alt="Imagem">
             <h1>{{ $post->title }}</h1>
             <p>{{ $post->content }}</p>
+            <div class="mb-3" style="background: #ebeaea;padding:5px;">
+                <strong>Tags: </strong>
+                @foreach ($post->tags as $tag)
+                    <span class="m-0">{{ $tag->name }} | </span>
+                @endforeach
+            </div>
 
             <div class="w-100 pb-3">
-                <h4>Comentarios</h4>
                 @include('dashboard.post.comment.create', ['postId' => $post->id])
+                <h4>Comentarios</h4>
                 @foreach ($post->comments as $comment)
                     <div class="rounded mt-2" style="background: #ebeaea;padding:5px;">
                         <div class="d-flex align-items-center justify-content-between">

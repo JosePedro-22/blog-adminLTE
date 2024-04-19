@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,8 @@ class PostController extends Controller
     {
         $posts = Post::query()->with('user')->paginate(10);
 
-        return view('dashboard.post.index',
+        return view(
+            'dashboard.post.index',
             [
                 'posts' => $posts,
             ]
@@ -29,8 +31,11 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::query()->whereActive(true)->get();
+        $tags = Tag::where('active', 'on')->get();
+
         return view('dashboard.post.create', [
             'categories' => $categories,
+            'tags' => $tags,
         ]);
     }
 
@@ -40,6 +45,8 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'tags' => 'sometimes|nullable|array',
+            'tags.*' => 'exists:tags,id',
             'thumbnail' => 'required | image',
             'category_id' => 'required | exists:categories,id',
             'title' => 'required | string | max:255',
@@ -48,11 +55,12 @@ class PostController extends Controller
         ]);
 
         $post = auth()->user->posts()->create($data);
+        $post->tags()->attach($data['tags']);
 
-        if($request->hasFile('thumbnail')){
-        $post->media()->create([
-            'path' => $request->thumbnail->store('posts')
-        ]);
+        if ($request->hasFile('thumbnail')) {
+            $post->media()->create([
+                'path' => $request->thumbnail->store('posts')
+            ]);
         }
 
         return back();
@@ -74,10 +82,12 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::query()->whereActive(true)->get();
+        $tags = Tag::where('active', 'on')->get();
 
         return view('dashboard.post.edit', [
             'post' => $post,
-            'categories' => $categories
+            'categories' => $categories,
+            'tags' => $tags
         ]);
     }
 
@@ -87,6 +97,8 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $data = $request->validate([
+            'tags' => 'sometimes|nullable|array',
+            'tags.*' => 'exists:tags,id',
             'thumbnail' => 'sometimes | nullable | image',
             'category_id' => 'required | exists:categories,id',
             'title' => 'required | string | max:255',
@@ -96,14 +108,16 @@ class PostController extends Controller
 
         $post->update($data);
 
-        if($request->hasFile('thumbnail')){
-            if($post->media && Storage::exists(($post->media->path))){
+        $post->tags()->sync($data['tags'] ?? []);
+
+        if ($request->hasFile('thumbnail')) {
+            if ($post->media && Storage::exists(($post->media->path))) {
                 Storage::delete($post->media->path);
 
                 $post->media()->update([
                     'path' => $request->thumbnail->store('posts')
                 ]);
-            }else
+            } else
                 $post->media()->create([
                     'path' => $request->thumbnail->store('posts')
                 ]);
@@ -117,8 +131,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if($post->media()){
-            if(Storage::exists($post->media->path)){
+        if ($post->media()) {
+            if (Storage::exists($post->media->path)) {
                 Storage::delete($post->media->path);
             }
             $post->media()->delete();

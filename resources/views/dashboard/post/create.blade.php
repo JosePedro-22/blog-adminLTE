@@ -1,4 +1,8 @@
 <x-app-layout>
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    @endpush
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -21,10 +25,8 @@
                             <div class="form-group">
                                 <div class="custom-file">
                                     <label for="thumbnail">Capa</label>
-                                    <input type="file" name="thumbnail" id="thumbnail" @class([
-                                        'form-control',
-                                        'is-invalid' => $errors->has('name')
-                                    ]) accept="image/*">
+                                    <input type="file" name="thumbnail" id="thumbnail" @class(['form-control', 'is-invalid' => $errors->has('name')])
+                                        accept="image/*">
 
                                     @error('thumbnail')
                                         <span class="text-danger">{{ $message }}</span>
@@ -38,7 +40,13 @@
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </x-select>
-                            <x-textarea label="Conteúdo" name="content" id="content" cols="30" rows="10"></x-textarea>
+                            <x-textarea label="Conteúdo" name="content" id="content" cols="30"
+                                rows="10"></x-textarea>
+                            <x-select label="Tags" id="tags" name="tags[]" multiple="multiple">
+                                @foreach ($tags as $tag)
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                @endforeach
+                            </x-select>
                             <x-select label="Status" name="status" id="status1">
                                 <option value="" disabled selected>Selecione</option>
                                 <option>Rascunho</option>
@@ -53,7 +61,13 @@
         </section>
     </div>
     @push('scripts')
+        <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
         <script src="{{ asset('pulgins/bs-custom-file-input/bs-custom-file-input.js') }}"></script>
         <script src="{{ asset('js/demo.js') }}"></script>
+        <script>
+            $('#tags').select2({
+                theme: 'bootstrap4',
+            });
+        </script>
     @endpush
 </x-app-layout>
